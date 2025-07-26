@@ -1,0 +1,6 @@
+@NepaliCommunityApi_HostAddress = http://localhost:5106
+
+GET {{NepaliCommunityApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
