@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
         }
 
         var result = await _authService.RegisterAsync(registerDto);
-        
+
         if (result == null)
         {
             return BadRequest(new { message = "User with this email already exists" });
@@ -42,7 +42,7 @@ public class AuthController : ControllerBase
         }
 
         var result = await _authService.LoginAsync(loginDto);
-        
+
         if (result == null)
         {
             return Unauthorized(new { message = "Invalid email or password" });
@@ -68,4 +68,4 @@ public class AuthController : ControllerBase
 
         return Ok(user);
     }
-} 
+}

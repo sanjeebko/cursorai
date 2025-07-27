@@ -87,9 +87,9 @@ public class NepaliCommunityContext : DbContext
                   .WithMany()
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.Restrict);
-            
+
             // Prevent duplicate registrations
             entity.HasIndex(e => new { e.EventId, e.UserId }).IsUnique();
         });
     }
-} 
+}

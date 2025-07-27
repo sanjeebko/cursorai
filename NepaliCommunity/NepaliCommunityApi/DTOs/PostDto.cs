@@ -7,7 +7,7 @@ public class CreatePostDto
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = string.Empty;
-    
+
     [Required]
     public string Content { get; set; } = string.Empty;
 }
@@ -17,7 +17,7 @@ public class UpdatePostDto
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = string.Empty;
-    
+
     [Required]
     public string Content { get; set; } = string.Empty;
 }
@@ -40,4 +40,4 @@ public class PostDto
 public class PostDetailDto : PostDto
 {
     public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
-} 
+}

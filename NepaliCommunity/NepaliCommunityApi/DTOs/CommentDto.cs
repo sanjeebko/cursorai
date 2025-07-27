@@ -6,10 +6,10 @@ public class CreateCommentDto
 {
     [Required]
     public string Content { get; set; } = string.Empty;
-    
+
     [Required]
     public int PostId { get; set; }
-    
+
     public int? ParentCommentId { get; set; }
 }
 
@@ -30,4 +30,4 @@ public class CommentDto
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public List<CommentDto> Replies { get; set; } = new List<CommentDto>();
-} 
+}

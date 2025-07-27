@@ -9,7 +9,7 @@ public static class DatabaseInitializer
     public static async Task InitializeAsync(NepaliCommunityContext context)
     {
         Console.WriteLine("Starting database initialization...");
-        
+
         try
         {
             // Ensure database is created
@@ -27,7 +27,7 @@ public static class DatabaseInitializer
             {
                 Console.WriteLine("Users already exist. Skipping seed data.");
             }
-            
+
             Console.WriteLine("Database initialization completed.");
         }
         catch (Exception ex)
@@ -277,7 +277,7 @@ public static class DatabaseInitializer
         dashainEvent.CurrentAttendees = 2;
         cookingEvent.CurrentAttendees = 2;
         await context.SaveChangesAsync();
-        
+
         Console.WriteLine("Seed data completed successfully!");
     }
-} 
+}

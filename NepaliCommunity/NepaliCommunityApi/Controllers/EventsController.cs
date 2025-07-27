@@ -297,4 +297,4 @@ public class EventsController : ControllerBase
 
         return Ok(new { message = "Successfully unregistered from event" });
     }
-} 
+}

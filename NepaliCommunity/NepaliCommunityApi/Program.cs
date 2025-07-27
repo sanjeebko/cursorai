@@ -56,13 +56,13 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "Nepali Community API", 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Nepali Community API",
         Version = "v1",
         Description = "API for Nepali Community application"
     });
-    
+
     // Configure JWT authentication in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

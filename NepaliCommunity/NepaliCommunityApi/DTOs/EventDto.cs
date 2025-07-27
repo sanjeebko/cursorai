@@ -7,21 +7,21 @@ public class CreateEventDto
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = string.Empty;
-    
+
     [Required]
     public string Description { get; set; } = string.Empty;
-    
+
     [Required]
     public DateTime EventDate { get; set; }
-    
+
     [StringLength(200)]
     public string? Location { get; set; }
-    
+
     [StringLength(500)]
     public string? Address { get; set; }
-    
+
     public int MaxAttendees { get; set; } = 0;
-    
+
     [StringLength(50)]
     public string? EventType { get; set; }
 }
@@ -31,21 +31,21 @@ public class UpdateEventDto
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = string.Empty;
-    
+
     [Required]
     public string Description { get; set; } = string.Empty;
-    
+
     [Required]
     public DateTime EventDate { get; set; }
-    
+
     [StringLength(200)]
     public string? Location { get; set; }
-    
+
     [StringLength(500)]
     public string? Address { get; set; }
-    
+
     public int MaxAttendees { get; set; } = 0;
-    
+
     [StringLength(50)]
     public string? EventType { get; set; }
 }
@@ -80,4 +80,4 @@ public class EventAttendeeDto
     public string UserName { get; set; } = string.Empty;
     public DateTime RegisteredAt { get; set; }
     public bool IsConfirmed { get; set; }
-} 
+}
