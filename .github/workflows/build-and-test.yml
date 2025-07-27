@@ -21,16 +21,16 @@ jobs:
         dotnet-version: '9.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore NepaliCommunityApi/NepaliCommunityApi.csproj
+      run: dotnet restore NepaliCommunity/NepaliCommunityApi/NepaliCommunityApi.csproj
       
     - name: Build
-      run: dotnet build NepaliCommunityApi/NepaliCommunityApi.csproj --no-restore --configuration Release
+      run: dotnet build NepaliCommunity/NepaliCommunityApi/NepaliCommunityApi.csproj --no-restore --configuration Release
       
     - name: Test
-      run: dotnet test NepaliCommunityApi/NepaliCommunityApi.csproj --no-build --verbosity normal --configuration Release
+      run: dotnet test NepaliCommunity/NepaliCommunityApi/NepaliCommunityApi.csproj --no-build --verbosity normal --configuration Release
       
     - name: Publish
-      run: dotnet publish NepaliCommunityApi/NepaliCommunityApi.csproj --no-build --configuration Release --output ./publish/api
+      run: dotnet publish NepaliCommunity/NepaliCommunityApi/NepaliCommunityApi.csproj --no-build --configuration Release --output ./publish/api
       
     - name: Upload API artifacts
       uses: actions/upload-artifact@v4
@@ -51,23 +51,23 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
-        cache-dependency-path: NepaliCommunityUi/package-lock.json
+        cache-dependency-path: NepaliCommunity/NepaliCommunityUi/package-lock.json
         
     - name: Install dependencies
       run: |
-        cd NepaliCommunityUi
+        cd NepaliCommunity/NepaliCommunityUi
         npm ci
         
     - name: Build Angular app
       run: |
-        cd NepaliCommunityUi
+        cd NepaliCommunity/NepaliCommunityUi
         npm run build
         
     - name: Upload Frontend artifacts
       uses: actions/upload-artifact@v4
       with:
         name: frontend-artifacts
-        path: NepaliCommunityUi/dist
+        path: NepaliCommunity/NepaliCommunityUi/dist
 
   security-scan:
     name: Security Scan
@@ -108,7 +108,7 @@ jobs:
     - name: Run .NET code analysis
       run: |
         dotnet tool install --global dotnet-format
-        dotnet format --verify-no-changes NepaliCommunityApi/
+        dotnet format --verify-no-changes NepaliCommunity/NepaliCommunityApi/
         
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -117,6 +117,6 @@ jobs:
         
     - name: Run ESLint
       run: |
-        cd NepaliCommunityUi
+        cd NepaliCommunity/NepaliCommunityUi
         npm ci
         npm run lint 
