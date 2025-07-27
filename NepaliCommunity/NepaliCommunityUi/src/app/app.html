@@ -1,0 +1,65 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>🏔️ Nepali Community</h1>
+        <p>नेपाली समुदाय</p>
+      </div>
+      <nav class="nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        <a routerLink="/posts" routerLinkActive="active" class="nav-link">Community</a>
+        <a routerLink="/events" routerLinkActive="active" class="nav-link">Events</a>
+        <a routerLink="/about" routerLinkActive="active" class="nav-link">About</a>
+        
+        <!-- Authentication Links -->
+        <div class="auth-links" *ngIf="!currentUser">
+          <a routerLink="/login" class="nav-link">Login</a>
+          <a routerLink="/register" class="nav-link">Register</a>
+        </div>
+        
+        <!-- User Menu -->
+        <div class="user-menu" *ngIf="currentUser">
+          <span class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</span>
+          <button (click)="logout()" class="nav-link logout-btn">Logout</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Nepali Community</h4>
+          <p>Bringing Nepalis together worldwide</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">WhatsApp Group</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Nepali Community. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>
