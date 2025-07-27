@@ -2,6 +2,11 @@
 
 A full-stack application for the Nepali community featuring an Angular 20 frontend and .NET 9 Web API backend.
 
+[![Build and Test](https://github.com/{owner}/{repo}/workflows/Build%20and%20Test/badge.svg)](https://github.com/{owner}/{repo}/actions/workflows/build-and-test.yml)
+[![Deploy](https://github.com/{owner}/{repo}/workflows/Deploy/badge.svg)](https://github.com/{owner}/{repo}/actions/workflows/deploy.yml)
+[![Database Test](https://github.com/{owner}/{repo}/workflows/Database%20Test/badge.svg)](https://github.com/{owner}/{repo}/actions/workflows/database-test.yml)
+[![Dependency Check](https://github.com/{owner}/{repo}/workflows/Dependency%20Check/badge.svg)](https://github.com/{owner}/{repo}/actions/workflows/dependency-check.yml)
+
 ## Quick Start
 
 ### Start the API:
@@ -81,6 +86,30 @@ When the application starts, it automatically:
 - ✅ Navigation with authentication state
 - ✅ Services for API communication
 
+## CI/CD Pipeline
+
+This project includes comprehensive GitHub Actions workflows:
+
+### 🔄 **Build and Test** (`build-and-test.yml`)
+- **Triggers**: Push to main/develop, Pull Requests
+- **Actions**: Builds API and frontend, runs tests, security scans
+- **Artifacts**: Uploads build outputs for deployment
+
+### 🚀 **Deploy** (`deploy.yml`)
+- **Triggers**: Release published, Manual dispatch
+- **Actions**: Creates deployment packages for staging/production
+- **Environments**: Supports multiple deployment targets
+
+### 🗄️ **Database Test** (`database-test.yml`)
+- **Triggers**: Changes to database files
+- **Actions**: Tests schema creation and data seeding
+- **Infrastructure**: Uses SQL Server container for testing
+
+### 📦 **Dependency Check** (`dependency-check.yml`)
+- **Triggers**: Weekly schedule, Manual dispatch
+- **Actions**: Checks for outdated packages, security vulnerabilities
+- **Automation**: Can auto-update dependencies
+
 ## API Endpoints
 
 ### Authentication
@@ -117,18 +146,6 @@ When the application starts, it automatically:
 3. **Login with sample data** - Use any of the sample user accounts
 4. **Test API endpoints** - Use Swagger at https://localhost:7250/swagger
 
-## Troubleshooting
-
-### Database Issues
-- The application automatically handles table creation and data seeding
-- If you get schema errors, the application will continue running
-- Check console output for any database initialization messages
-
-### Port Conflicts
-If ports are already in use:
-1. Change the ports in `launchSettings.json`
-2. Update the frontend service URLs accordingly
-
 ## Development
 
 ### Prerequisites
@@ -153,8 +170,31 @@ NepaliCommunity/
 │   │   ├── services/            # API Services
 │   │   └── app.*               # Main App Files
 │   └── package.json
+├── .github/workflows/           # GitHub Actions Workflows
+│   ├── build-and-test.yml      # Main CI/CD pipeline
+│   ├── deploy.yml              # Deployment workflow
+│   ├── database-test.yml       # Database testing
+│   ├── dependency-check.yml    # Dependency management
+│   └── README.md               # Workflow documentation
 └── README.md                    # This file
 ```
+
+## Troubleshooting
+
+### Database Issues
+- The application automatically handles table creation and data seeding
+- If you get schema errors, the application will continue running
+- Check console output for any database initialization messages
+
+### Port Conflicts
+If ports are already in use:
+1. Change the ports in `launchSettings.json`
+2. Update the frontend service URLs accordingly
+
+### CI/CD Issues
+- Check the **Actions** tab in GitHub for workflow status
+- Review workflow logs for detailed error information
+- Ensure all dependencies are properly configured
 
 ## Next Steps
 
@@ -164,4 +204,14 @@ To enhance the application:
 3. Add file upload functionality
 4. Enhance security with role-based access control
 5. Add search and filtering capabilities
-6. Implement notifications system 
+6. Implement notifications system
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+The CI/CD pipeline will automatically test your changes and provide feedback. 

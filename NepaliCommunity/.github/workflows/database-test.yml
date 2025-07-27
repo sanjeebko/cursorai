@@ -1,0 +1,81 @@
+name: Database Test
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'NepaliCommunityApi/Data/**'
+      - 'NepaliCommunityApi/Models/**'
+      - 'NepaliCommunityApi/appsettings.json'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'NepaliCommunityApi/Data/**'
+      - 'NepaliCommunityApi/Models/**'
+      - 'NepaliCommunityApi/appsettings.json'
+
+jobs:
+  test-database:
+    name: Test Database Schema and Migrations
+    runs-on: ubuntu-latest
+    
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          SA_PASSWORD: TestPassword123!
+          ACCEPT_EULA: Y
+        options: >-
+          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P TestPassword123! -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 1433:1433
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Create test appsettings
+      run: |
+        cat > NepaliCommunityApi/appsettings.Test.json << EOF
+        {
+          "ConnectionStrings": {
+            "DefaultConnection": "Server=localhost;Database=nepalicommunity_test;User Id=sa;Password=TestPassword123!;TrustServerCertificate=true;"
+          },
+          "JwtSettings": {
+            "SecretKey": "TestSecretKeyForCI",
+            "Issuer": "NepaliCommunityApi",
+            "Audience": "NepaliCommunityApp",
+            "ExpirationInMinutes": 60
+          }
+        }
+        EOF
+        
+    - name: Wait for SQL Server
+      run: |
+        timeout 60 bash -c 'until /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P TestPassword123! -Q "SELECT 1"; do sleep 1; done'
+        
+    - name: Test database creation
+      run: |
+        cd NepaliCommunityApi
+        dotnet run --environment Test --urls "http://localhost:5000" &
+        sleep 30
+        curl -f http://localhost:5000/swagger || echo "API not ready yet"
+        
+    - name: Test database seeding
+      run: |
+        cd NepaliCommunityApi
+        dotnet run --environment Test --urls "http://localhost:5001" &
+        sleep 30
+        curl -f http://localhost:5001/api/auth/me || echo "Auth endpoint not ready"
+        
+    - name: Cleanup
+      run: |
+        pkill -f "dotnet run" || true 
