@@ -1,0 +1,127 @@
+name: Dependency Check
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-dotnet-dependencies:
+    name: Check .NET Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Check for outdated packages
+      run: |
+        cd NepaliCommunity/NepaliCommunityApi
+        dotnet list package --outdated
+        
+    - name: Check for vulnerable packages
+      run: |
+        cd NepaliCommunity/NepaliCommunityApi
+        dotnet list package --vulnerable
+        
+    - name: Create issue for outdated packages
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🔍 .NET Dependencies Update Available',
+            body: 'Some .NET packages have updates available. Please review and update as needed.',
+            labels: ['dependencies', 'dotnet']
+          })
+
+  check-npm-dependencies:
+    name: Check NPM Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Check for outdated packages
+      run: |
+        cd NepaliCommunity/NepaliCommunityUi
+        npm outdated
+        
+    - name: Run npm audit
+      run: |
+        cd NepaliCommunity/NepaliCommunityUi
+        npm audit --audit-level moderate
+        
+    - name: Create issue for outdated packages
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🔍 NPM Dependencies Update Available',
+            body: 'Some NPM packages have updates available or security vulnerabilities. Please review and update as needed.',
+            labels: ['dependencies', 'npm']
+          })
+
+  auto-update-dependencies:
+    name: Auto Update Dependencies
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Update .NET packages
+      run: |
+        cd NepaliCommunity/NepaliCommunityApi
+        dotnet add package Microsoft.EntityFrameworkCore --version latest
+        dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version latest
+        dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version latest
+        
+    - name: Update NPM packages
+      run: |
+        cd NepaliCommunity/NepaliCommunityUi
+        npm update
+        
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: update dependencies'
+        title: '🔧 Update Dependencies'
+        body: |
+          This PR updates dependencies to their latest versions.
+          
+          - .NET packages updated
+          - NPM packages updated
+          
+          Please review the changes and test thoroughly.
+        branch: update-dependencies
+        delete-branch: true 
