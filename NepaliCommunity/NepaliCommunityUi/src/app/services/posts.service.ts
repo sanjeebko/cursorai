@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Post {
@@ -67,7 +67,7 @@ export class PostsService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(page: number = 1, pageSize: number = 10): Observable<Post[]> {
+  getPosts(page = 1, pageSize = 10): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.apiUrl}?page=${page}&pageSize=${pageSize}`);
   }
 

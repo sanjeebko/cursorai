@@ -59,7 +59,7 @@ export class EventsService {
 
   constructor(private http: HttpClient) { }
 
-  getEvents(page: number = 1, pageSize: number = 10): Observable<Event[]> {
+  getEvents(page = 1, pageSize = 10): Observable<Event[]> {
     return this.http.get<Event[]>(`${this.apiUrl}?page=${page}&pageSize=${pageSize}`);
   }
 
@@ -79,11 +79,11 @@ export class EventsService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  registerForEvent(id: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${id}/register`, {});
+  registerForEvent(id: number): Observable<unknown> {
+    return this.http.post<unknown>(`${this.apiUrl}/${id}/register`, {});
   }
 
-  unregisterFromEvent(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}/register`);
+  unregisterFromEvent(id: number): Observable<unknown> {
+    return this.http.delete<unknown>(`${this.apiUrl}/${id}/register`);
   }
 } 
